@@ -8,6 +8,10 @@
 // Get backend URL from environment variable with fallback
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
+// Log the backend URL being used (helpful for debugging)
+console.log('🔗 Backend URL configured:', BACKEND_URL);
+console.log('🌍 Environment:', process.env.NODE_ENV);
+
 /**
  * Handle API errors consistently
  * @param {Response} response - Fetch API response object
@@ -15,11 +19,18 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
  * @throws {Error} - Throws error with message from API or status text
  */
 const handleResponse = async (response) => {
+  console.log(`📡 Response status: ${response.status} ${response.statusText}`);
+  
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.detail || response.statusText || 'API request failed');
+    const errorMessage = errorData.detail || response.statusText || 'API request failed';
+    console.error('❌ API Error:', errorMessage);
+    throw new Error(errorMessage);
   }
-  return response.json();
+  
+  const data = await response.json();
+  console.log('✅ API Response:', data);
+  return data;
 };
 
 // PUBLIC_INTERFACE
@@ -31,6 +42,9 @@ const handleResponse = async (response) => {
  * const { session_id } = await createSession();
  */
 export const createSession = async () => {
+  console.log('📤 Creating new session...');
+  console.log('🔗 Request URL:', `${BACKEND_URL}/api/sessions`);
+  
   try {
     const response = await fetch(`${BACKEND_URL}/api/sessions`, {
       method: 'POST',
@@ -40,7 +54,13 @@ export const createSession = async () => {
     });
     return handleResponse(response);
   } catch (error) {
-    console.error('Error creating session:', error);
+    console.error('❌ Error creating session:', error.message);
+    
+    // Check if it's a network error
+    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+      throw new Error(`Cannot connect to backend at ${BACKEND_URL}. Please ensure the backend is running and CORS is configured correctly.`);
+    }
+    
     throw error;
   }
 };
@@ -56,6 +76,11 @@ export const createSession = async () => {
  * const { reply } = await sendMessage(sessionId, "Hello AI!");
  */
 export const sendMessage = async (sessionId, message) => {
+  console.log('📤 Sending message to AI...');
+  console.log('🔗 Request URL:', `${BACKEND_URL}/api/chat`);
+  console.log('📝 Session ID:', sessionId);
+  console.log('💬 Message:', message.substring(0, 50) + '...');
+  
   try {
     const response = await fetch(`${BACKEND_URL}/api/chat`, {
       method: 'POST',
@@ -69,7 +94,13 @@ export const sendMessage = async (sessionId, message) => {
     });
     return handleResponse(response);
   } catch (error) {
-    console.error('Error sending message:', error);
+    console.error('❌ Error sending message:', error.message);
+    
+    // Check if it's a network error
+    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+      throw new Error(`Cannot connect to backend at ${BACKEND_URL}. Please check your connection.`);
+    }
+    
     throw error;
   }
 };
