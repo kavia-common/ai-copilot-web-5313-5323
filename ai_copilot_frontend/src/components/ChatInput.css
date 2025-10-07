@@ -2,6 +2,9 @@
   padding: 1rem;
   background-color: #FFFFFF;
   border-top: 1px solid #E5E7EB;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .chat-input-form {
@@ -25,6 +28,9 @@
   transition: border-color 0.2s ease;
   color: #111827;
   background-color: #FFFFFF;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .chat-input:focus {
