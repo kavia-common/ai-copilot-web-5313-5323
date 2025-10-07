@@ -1,0 +1,135 @@
+.chat-message {
+  display: flex;
+  margin-bottom: 1.5rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message.assistant {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 75%;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.chat-message.user .message-content {
+  background-color: #374151;
+  color: #FFFFFF;
+}
+
+.chat-message.assistant .message-content {
+  background-color: #F9FAFB;
+  color: #111827;
+  border: 1px solid #E5E7EB;
+}
+
+.message-role {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+.chat-message.user .message-role {
+  color: #9CA3AF;
+}
+
+.chat-message.assistant .message-role {
+  color: #374151;
+}
+
+.message-text {
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.message-text p {
+  margin: 0.5rem 0;
+}
+
+.message-text p:first-child {
+  margin-top: 0;
+}
+
+.message-text p:last-child {
+  margin-bottom: 0;
+}
+
+.message-text code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'Courier New', monospace;
+}
+
+.chat-message.user .message-text code {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.message-text pre {
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.message-text pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.message-text ul,
+.message-text ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.message-text li {
+  margin: 0.25rem 0;
+}
+
+.message-text blockquote {
+  border-left: 3px solid #9CA3AF;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  opacity: 0.9;
+}
+
+.message-text a {
+  color: #10B981;
+  text-decoration: underline;
+}
+
+.message-text a:hover {
+  color: #059669;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .message-content {
+    max-width: 90%;
+    padding: 0.875rem 1rem;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+  }
+}
