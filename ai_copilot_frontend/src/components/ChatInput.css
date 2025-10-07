@@ -3,8 +3,9 @@
   background-color: #FFFFFF;
   border-top: 1px solid #E5E7EB;
   position: relative;
-  z-index: 10;
+  z-index: 100;
   flex-shrink: 0;
+  pointer-events: auto;
 }
 
 .chat-input-form {
@@ -12,6 +13,8 @@
   gap: 0.75rem;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 101;
 }
 
 .chat-input {
@@ -28,9 +31,14 @@
   transition: border-color 0.2s ease;
   color: #111827;
   background-color: #FFFFFF;
-  pointer-events: auto;
+  pointer-events: auto !important;
   position: relative;
-  z-index: 1;
+  z-index: 102;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 }
 
 .chat-input:focus {

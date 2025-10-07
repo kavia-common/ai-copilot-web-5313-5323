@@ -1,0 +1,36 @@
+.debug-panel {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.95);
+  color: #00ff00;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+}
+
+.debug-panel-toggle {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  background: #374151;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 9999;
+  font-size: 12px;
+  pointer-events: auto;
+}
+
+.debug-panel-toggle:hover {
+  background: #1F2937;
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Input Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            min-height: 48px;
+            font-family: inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #374151;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .event-log {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        h2 {
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Chat Input Diagnostic Test</h1>
+    
+    <div class="test-container">
+        <h2>Test 1: Basic Textarea</h2>
+        <textarea id="test1" placeholder="Type here to test basic functionality..."></textarea>
+        <div class="status" id="status1">Status: Ready</div>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 2: Textarea with Event Listeners</h2>
+        <textarea id="test2" placeholder="Type here to see detailed event logging..."></textarea>
+        <div class="status" id="status2">Status: Ready</div>
+        <div class="event-log" id="eventLog"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 3: Controlled Textarea (React-like)</h2>
+        <textarea id="test3" placeholder="Type here to test controlled component behavior..."></textarea>
+        <div class="status" id="status3">Character count: 0</div>
+    </div>
+
+    <script>
+        // Test 1: Basic functionality
+        const test1 = document.getElementById('test1');
+        const status1 = document.getElementById('status1');
+        
+        test1.addEventListener('input', (e) => {
+            status1.textContent = `Status: Typing... (${e.target.value.length} chars)`;
+            status1.style.background = '#d4edda';
+        });
+
+        test1.addEventListener('focus', () => {
+            console.log('✅ Test 1: Textarea focused');
+        });
+
+        // Test 2: Detailed event logging
+        const test2 = document.getElementById('test2');
+        const status2 = document.getElementById('status2');
+        const eventLog = document.getElementById('eventLog');
+        
+        function logEvent(eventName, details = '') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${eventName} ${details}\n`;
+            eventLog.textContent += logEntry;
+            eventLog.scrollTop = eventLog.scrollHeight;
+            console.log(logEntry);
+        }
+
+        ['focus', 'blur', 'click', 'input', 'keydown', 'keyup', 'change'].forEach(eventType => {
+            test2.addEventListener(eventType, (e) => {
+                let details = '';
+                if (eventType === 'keydown' || eventType === 'keyup') {
+                    details = `(key: ${e.key})`;
+                } else if (eventType === 'input') {
+                    details = `(length: ${e.target.value.length})`;
+                }
+                logEvent(eventType, details);
+            });
+        });
+
+        test2.addEventListener('input', (e) => {
+            status2.textContent = `Status: Active (${e.target.value.length} chars)`;
+            status2.style.background = '#d1ecf1';
+        });
+
+        // Test 3: Controlled component (React-like behavior)
+        const test3 = document.getElementById('test3');
+        const status3 = document.getElementById('status3');
+        let value3 = '';
+
+        test3.addEventListener('input', (e) => {
+            value3 = e.target.value;
+            test3.value = value3; // Simulate controlled component
+            status3.textContent = `Character count: ${value3.length}`;
+            status3.style.background = '#fff3cd';
+            console.log('Test 3 value:', value3);
+        });
+
+        // Global diagnostics
+        console.log('🔧 Input Test Page Loaded');
+        console.log('Document ready state:', document.readyState);
+        console.log('Active element:', document.activeElement);
+        
+        // Check for any overlays or blocking elements
+        setTimeout(() => {
+            const allTextareas = document.querySelectorAll('textarea');
+            allTextareas.forEach((textarea, index) => {
+                const rect = textarea.getBoundingClientRect();
+                const elementAtPoint = document.elementFromPoint(rect.left + rect.width/2, rect.top + rect.height/2);
+                console.log(`Textarea ${index + 1}:`, {
+                    id: textarea.id,
+                    disabled: textarea.disabled,
+                    readOnly: textarea.readOnly,
+                    pointerEvents: window.getComputedStyle(textarea).pointerEvents,
+                    zIndex: window.getComputedStyle(textarea).zIndex,
+                    elementAtPoint: elementAtPoint.tagName + (elementAtPoint.id ? '#' + elementAtPoint.id : '')
+                });
+            });
+        }, 1000);
+    </script>
+</body>
+</html>

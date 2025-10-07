@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import ChatMessage from './components/ChatMessage';
 import ChatInput from './components/ChatInput';
+import DebugPanel from './components/DebugPanel';
 import { createSession, sendMessage } from './services/api';
 
 // PUBLIC_INTERFACE
@@ -23,8 +24,10 @@ function App() {
   // Initialize session on mount
   useEffect(() => {
     const initSession = async () => {
+      console.log('🚀 Initializing chat session...');
       try {
         const { session_id } = await createSession();
+        console.log('✅ Session created successfully:', session_id);
         setSessionId(session_id);
         // Add welcome message
         setMessages([
@@ -34,8 +37,19 @@ function App() {
           },
         ]);
       } catch (err) {
-        setError('Failed to initialize chat session. Please refresh the page.');
-        console.error('Session initialization error:', err);
+        console.error('❌ Session initialization error:', err);
+        // Create a temporary session ID to allow typing even if backend is down
+        const tempSessionId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        console.log('⚠️ Using temporary session ID:', tempSessionId);
+        setSessionId(tempSessionId);
+        setError('Backend connection failed. Messages will be queued locally.');
+        // Still show welcome message
+        setMessages([
+          {
+            role: 'assistant',
+            content: '👋 Hello! I\'m your AI Copilot. Note: Backend connection failed, but you can still type messages.',
+          },
+        ]);
       }
     };
 
@@ -121,6 +135,9 @@ function App() {
 
         {/* Input area */}
         <ChatInput onSendMessage={handleSendMessage} disabled={isLoading || !sessionId} />
+
+        {/* Debug Panel - Remove in production */}
+        <DebugPanel sessionId={sessionId} isLoading={isLoading} error={error} />
       </div>
     </div>
   );

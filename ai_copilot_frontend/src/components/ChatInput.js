@@ -15,14 +15,25 @@ import './ChatInput.css';
  */
 const ChatInput = ({ onSendMessage, disabled }) => {
   const [message, setMessage] = useState('');
+  const textareaRef = React.useRef(null);
+
+  // Debug logging
+  React.useEffect(() => {
+    console.log('ChatInput state:', { disabled, hasMessage: message.length > 0 });
+  }, [disabled, message]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedMessage = message.trim();
     
+    console.log('Submit attempt:', { trimmedMessage, disabled });
+    
     if (trimmedMessage && !disabled) {
+      console.log('✅ Sending message:', trimmedMessage);
       onSendMessage(trimmedMessage);
       setMessage('');
+    } else {
+      console.log('❌ Submit blocked:', { hasMessage: !!trimmedMessage, disabled });
     }
   };
 
@@ -33,17 +44,35 @@ const ChatInput = ({ onSendMessage, disabled }) => {
     }
   };
 
+  const handleChange = (e) => {
+    console.log('Input change:', e.target.value.length, 'chars');
+    setMessage(e.target.value);
+  };
+
+  const handleFocus = (e) => {
+    console.log('✅ Textarea focused');
+  };
+
+  const handleClick = (e) => {
+    console.log('✅ Textarea clicked');
+  };
+
   return (
     <div className="chat-input-container">
       <form onSubmit={handleSubmit} className="chat-input-form">
         <textarea
+          ref={textareaRef}
           className="chat-input"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onClick={handleClick}
           placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
           disabled={disabled}
           rows="1"
+          autoComplete="off"
+          spellCheck="true"
         />
         <button
           type="submit"
