@@ -26,7 +26,7 @@ const ChatInput = ({ onSendMessage, disabled }) => {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
@@ -40,7 +40,7 @@ const ChatInput = ({ onSendMessage, disabled }) => {
           className="chat-input"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
           disabled={disabled}
           rows="1"
