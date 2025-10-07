@@ -28,6 +28,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Runtime backend URL injection for preview environments -->
+    <script>
+      // This allows runtime configuration of the backend URL
+      // The deployment agent can inject this value for preview environments
+      window.__BACKEND_URL__ = window.__BACKEND_URL__ || undefined;
+    </script>
+    
     <title>KAVIA App</title>
   </head>
   <body>

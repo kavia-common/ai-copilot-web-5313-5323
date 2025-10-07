@@ -5,15 +5,17 @@ import React, { useState, useEffect } from 'react';
  * DebugPanel Component
  * 
  * Displays real-time debugging information about the app state
- * to help diagnose input blocking issues.
+ * to help diagnose input blocking and connectivity issues.
  * 
  * @param {Object} props - Component props
  * @param {string} props.sessionId - Current session ID
  * @param {boolean} props.isLoading - Loading state
  * @param {string} props.error - Error message if any
+ * @param {string} props.healthStatus - Health status: 'checking', 'healthy', 'unhealthy'
+ * @param {string} props.baseUrl - Base URL being used for API calls
  * @returns {JSX.Element} - Rendered debug panel
  */
-const DebugPanel = ({ sessionId, isLoading, error }) => {
+const DebugPanel = ({ sessionId, isLoading, error, healthStatus, baseUrl }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [elementInfo, setElementInfo] = useState({});
 
@@ -88,10 +90,10 @@ const DebugPanel = ({ sessionId, isLoading, error }) => {
       position: 'fixed',
       bottom: '10px',
       right: '10px',
-      maxWidth: '400px',
+      maxWidth: '450px',
       maxHeight: '80vh',
       overflow: 'auto',
-      background: 'rgba(0, 0, 0, 0.9)',
+      background: 'rgba(0, 0, 0, 0.95)',
       color: '#00ff00',
       padding: '15px',
       borderRadius: '8px',
@@ -118,11 +120,17 @@ const DebugPanel = ({ sessionId, isLoading, error }) => {
       </div>
 
       <div style={{ marginBottom: '10px' }}>
+        <div style={{ color: '#ffff00', marginBottom: '5px' }}>Backend Connection:</div>
+        <div>Base URL: {baseUrl || '(same-origin)'}</div>
+        <div>Health: {healthStatus === 'healthy' ? '✅ HEALTHY' : healthStatus === 'checking' ? '⏳ CHECKING' : '❌ UNHEALTHY'}</div>
+      </div>
+
+      <div style={{ marginBottom: '10px' }}>
         <div style={{ color: '#ffff00', marginBottom: '5px' }}>App State:</div>
-        <div>SessionID: {sessionId ? '✅ ' + sessionId.substring(0, 20) + '...' : '❌ null'}</div>
+        <div>SessionID: {sessionId ? '✅ ' + sessionId.substring(0, 20) + '...' : '⚠️ null (lazy creation)'}</div>
         <div>Loading: {isLoading ? '⏳ true' : '✅ false'}</div>
-        <div>Error: {error ? '❌ ' + error : '✅ none'}</div>
-        <div>Disabled: {isLoading || !sessionId ? '❌ YES' : '✅ NO'}</div>
+        <div>Error: {error ? '❌ ' + error.substring(0, 50) + '...' : '✅ none'}</div>
+        <div>Input Disabled: {isLoading ? '⏳ YES (loading)' : '✅ NO'}</div>
       </div>
 
       <div style={{ marginBottom: '10px' }}>
@@ -135,19 +143,9 @@ const DebugPanel = ({ sessionId, isLoading, error }) => {
             <div>Pointer Events: {elementInfo.pointerEvents}</div>
             <div>Z-Index: {elementInfo.zIndex}</div>
             <div>Cursor: {elementInfo.cursor}</div>
-            <div>Position: {elementInfo.position}</div>
-            <div>Visibility: {elementInfo.visibility}</div>
-            <div>Opacity: {elementInfo.opacity}</div>
             <div style={{ marginTop: '5px', color: '#ffaa00' }}>Center Check:</div>
-            <div>Element at center: {elementInfo.elementAtCenter}</div>
+            <div>Element at center: {elementInfo.elementAtCenter.substring(0, 30)}</div>
             <div>Is input? {elementInfo.isInputAtCenter ? '✅ YES' : '❌ NO (BLOCKED!)'}</div>
-            {elementInfo.rect && (
-              <>
-                <div style={{ marginTop: '5px', color: '#ffaa00' }}>Dimensions:</div>
-                <div>Top: {elementInfo.rect.top}px, Left: {elementInfo.rect.left}px</div>
-                <div>Size: {elementInfo.rect.width}x{elementInfo.rect.height}px</div>
-              </>
-            )}
           </>
         ) : (
           <div>❌ Input element not found!</div>

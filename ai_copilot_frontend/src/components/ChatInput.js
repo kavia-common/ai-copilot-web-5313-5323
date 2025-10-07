@@ -7,6 +7,7 @@ import './ChatInput.css';
  * 
  * Provides a text input field and send button for users to submit messages.
  * Handles Enter key submission and prevents empty messages.
+ * Input is ONLY disabled during loading, never based on session state.
  * 
  * @param {Object} props - Component props
  * @param {Function} props.onSendMessage - Callback function when message is sent
@@ -19,7 +20,7 @@ const ChatInput = ({ onSendMessage, disabled }) => {
 
   // Debug logging
   React.useEffect(() => {
-    console.log('ChatInput state:', { disabled, hasMessage: message.length > 0 });
+    console.log('[ChatInput] State:', { disabled, hasMessage: message.length > 0 });
   }, [disabled, message]);
 
   const handleSubmit = (e) => {
@@ -30,27 +31,27 @@ const ChatInput = ({ onSendMessage, disabled }) => {
     
     const trimmedMessage = message.trim();
     
-    console.log('📝 Submit attempt:', { 
+    console.log('[ChatInput] 📝 Submit attempt:', { 
       trimmedMessage: trimmedMessage.substring(0, 50), 
       disabled, 
       messageLength: message.length 
     });
     
     if (trimmedMessage && !disabled) {
-      console.log('✅ Sending message:', trimmedMessage.substring(0, 50) + '...');
+      console.log('[ChatInput] ✅ Sending message:', trimmedMessage.substring(0, 50) + '...');
       try {
         onSendMessage(trimmedMessage);
         setMessage('');
       } catch (error) {
-        console.error('❌ Error in onSendMessage:', error);
+        console.error('[ChatInput] ❌ Error in onSendMessage:', error);
       }
     } else {
-      console.log('❌ Submit blocked:', { hasMessage: !!trimmedMessage, disabled });
+      console.log('[ChatInput] ❌ Submit blocked:', { hasMessage: !!trimmedMessage, disabled });
     }
   };
 
   const handleKeyDown = (e) => {
-    console.log('⌨️ Key pressed:', e.key, 'Shift:', e.shiftKey, 'Disabled:', disabled);
+    console.log('[ChatInput] ⌨️ Key pressed:', e.key, 'Shift:', e.shiftKey, 'Disabled:', disabled);
     
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -60,16 +61,16 @@ const ChatInput = ({ onSendMessage, disabled }) => {
   };
 
   const handleChange = (e) => {
-    console.log('Input change:', e.target.value.length, 'chars');
+    console.log('[ChatInput] Input change:', e.target.value.length, 'chars');
     setMessage(e.target.value);
   };
 
   const handleFocus = (e) => {
-    console.log('✅ Textarea focused');
+    console.log('[ChatInput] ✅ Textarea focused');
   };
 
   const handleClick = (e) => {
-    console.log('✅ Textarea clicked');
+    console.log('[ChatInput] ✅ Textarea clicked');
   };
 
   return (
