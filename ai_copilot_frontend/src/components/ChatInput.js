@@ -23,23 +23,38 @@ const ChatInput = ({ onSendMessage, disabled }) => {
   }, [disabled, message]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     const trimmedMessage = message.trim();
     
-    console.log('Submit attempt:', { trimmedMessage, disabled });
+    console.log('📝 Submit attempt:', { 
+      trimmedMessage: trimmedMessage.substring(0, 50), 
+      disabled, 
+      messageLength: message.length 
+    });
     
     if (trimmedMessage && !disabled) {
-      console.log('✅ Sending message:', trimmedMessage);
-      onSendMessage(trimmedMessage);
-      setMessage('');
+      console.log('✅ Sending message:', trimmedMessage.substring(0, 50) + '...');
+      try {
+        onSendMessage(trimmedMessage);
+        setMessage('');
+      } catch (error) {
+        console.error('❌ Error in onSendMessage:', error);
+      }
     } else {
       console.log('❌ Submit blocked:', { hasMessage: !!trimmedMessage, disabled });
     }
   };
 
   const handleKeyDown = (e) => {
+    console.log('⌨️ Key pressed:', e.key, 'Shift:', e.shiftKey, 'Disabled:', disabled);
+    
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
+      e.stopPropagation();
       handleSubmit(e);
     }
   };

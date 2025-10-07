@@ -109,7 +109,6 @@ body, html, #root {
   flex-direction: column;
   background-color: var(--surface);
   min-height: 0;
-  max-height: calc(100vh - 200px);
   position: relative;
   z-index: 1;
 }
