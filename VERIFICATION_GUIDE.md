@@ -50,7 +50,7 @@
 
 ```bash
 # Check backend health
-curl -k https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001/
+curl -k https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001/
 
 # Expected response:
 # {"status":"healthy","message":"AI Copilot Backend API is running"}
@@ -60,7 +60,7 @@ curl -k https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001/
 
 ```bash
 # Check frontend
-curl -I -k https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3000
+curl -I -k https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3000
 
 # Expected: HTTP/2 200
 ```

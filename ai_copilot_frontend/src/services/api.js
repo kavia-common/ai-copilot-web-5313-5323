@@ -5,27 +5,31 @@
  * Includes functions for session management and chat operations.
  */
 
-// Determine the BASE_URL with multiple fallbacks for robust deployment
+/**
+ * Backend base URL resolution with prioritized fallbacks:
+ * 1) window.__BACKEND_URL__ (runtime injection)
+ * 2) process.env.REACT_APP_BACKEND_BASE_URL (preferred for CRA)
+ * 3) process.env.REACT_APP_BACKEND_URL (backward compatibility)
+ * 4) Default to the current backend URL provided by the environment
+ */
 let BASE_URL;
 
-// Priority 1: Check for runtime-injected backend URL (for preview environments)
 if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
   BASE_URL = window.__BACKEND_URL__;
   console.log('[API] ✅ Using window.__BACKEND_URL__:', BASE_URL);
-}
-// Priority 2: Use environment variable (works in development and build-time)
-else if (process.env.REACT_APP_BACKEND_URL) {
+} else if (process.env.REACT_APP_BACKEND_BASE_URL) {
+  BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
+  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', BASE_URL);
+} else if (process.env.REACT_APP_BACKEND_URL) {
   BASE_URL = process.env.REACT_APP_BACKEND_URL;
   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
-}
-// Priority 3: Same-origin relative path (for production deployments where frontend and backend share same domain)
-else {
-  // Use relative path - will work if backend is on same origin
-  BASE_URL = '';
-  console.log('[API] ✅ Using same-origin relative path (empty BASE_URL)');
+} else {
+  // Default to deployment-provided backend URL
+  BASE_URL = 'https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001';
+  console.log('[API] ✅ Using default BASE_URL (deployment):', BASE_URL);
 }
 
-console.log('[API] 🔗 Final BASE_URL configured:', BASE_URL || '(empty - same origin)');
+console.log('[API] 🔗 Final BASE_URL configured:', BASE_URL || '(empty)');
 console.log('[API] 🌍 Environment:', process.env.NODE_ENV);
 
 // Export BASE_URL for use in health checks
