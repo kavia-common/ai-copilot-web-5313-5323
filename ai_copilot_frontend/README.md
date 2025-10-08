@@ -36,7 +36,11 @@ React-based web interface for the AI Copilot application. Provides a clean, resp
    The `.env` file should contain:
 
    ```
-   REACT_APP_BACKEND_URL=http://localhost:3001
+   # Preferred (used first by the app)
+   REACT_APP_BACKEND_BASE_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+
+   # Fallback (backward compatibility)
+   # REACT_APP_BACKEND_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
    ```
 
    **Note**: For production deployments, update this URL to point to your backend API endpoint.
@@ -55,7 +59,8 @@ The application will automatically open in your browser at `http://localhost:300
 
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
-| `REACT_APP_BACKEND_URL` | Backend API base URL | Yes | `http://localhost:3001` |
+| `REACT_APP_BACKEND_BASE_URL` | Backend API base URL (preferred) | Yes | `https://kavia-alb-2474e9cb-881246245.backend.kavia.app` |
+| `REACT_APP_BACKEND_URL` | Backend API base URL (fallback) | No | (unset) |
 
 **Important**: Environment variables prefixed with `REACT_APP_` are embedded at build time. If you change them, restart the development server.
 
@@ -67,7 +72,7 @@ The frontend communicates with the backend API using three main operations:
 2. **Send Message**: Submit user input and receive AI response
 3. **Get History**: Retrieve previous messages in a session
 
-All API calls are handled through `src/services/api.js`, which reads the backend URL from `process.env.REACT_APP_BACKEND_URL`.
+All API calls are handled through `src/services/api.js`, which reads the backend URL from `process.env.REACT_APP_BACKEND_BASE_URL` (preferred) falling back to `process.env.REACT_APP_BACKEND_URL`.
 
 ### CORS Configuration
 
@@ -209,7 +214,7 @@ The application uses the Ocean Professional theme defined in `src/App.css`:
 
 **Solution**: 
 - Verify the backend is running on port 3001
-- Check `REACT_APP_BACKEND_URL` in `.env` is correct
+- Check `REACT_APP_BACKEND_BASE_URL` in `.env` is correct
 - Ensure no firewall is blocking the connection
 
 ### CORS Error in Console

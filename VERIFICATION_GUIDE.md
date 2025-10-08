@@ -5,7 +5,7 @@
 ### 1. Backend URL Configuration
 - **Fixed**: Robust BASE_URL detection with multiple fallbacks
   - Priority 1: `window.__BACKEND_URL__` (runtime injection for preview environments)
-  - Priority 2: `process.env.REACT_APP_BACKEND_URL` (build-time environment variable)
+  - Priority 2: `process.env.REACT_APP_BACKEND_BASE_URL` (build-time environment variable)
   - Priority 3: Empty string (same-origin relative paths)
 - **Tagged logging**: All API logs now use `[API]` prefix for easy filtering
 
@@ -50,7 +50,7 @@
 
 ```bash
 # Check backend health
-curl -k https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001/
+curl -k https://kavia-alb-2474e9cb-881246245.backend.kavia.app/
 
 # Expected response:
 # {"status":"healthy","message":"AI Copilot Backend API is running"}
@@ -71,7 +71,7 @@ curl -I -k https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3000
 2. Open browser DevTools (F12)
 3. Check Console for:
    ```
-   [API] ✅ Using process.env.REACT_APP_BACKEND_URL: https://...
+   [API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL: https://...
    [API] 🔗 Final BASE_URL configured: https://...
    [API] 🏥 Performing health check...
    [API] ✅ Health check successful: {...}
@@ -157,19 +157,19 @@ Complete flow test:
 
 ### Successful Flow
 ```
-[API] ✅ Using process.env.REACT_APP_BACKEND_URL: https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001
-[API] 🔗 Final BASE_URL configured: https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001
+[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+[API] 🔗 Final BASE_URL configured: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
 [API] 🌍 Environment: development
 [App] 🏥 Starting health check...
 [API] 🏥 Performing health check...
-[API] 🔗 Health check URL: https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001/
+[API] 🔗 Health check URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app/
 [API] 📡 Response status: 200 OK
 [API] ✅ API Response: {status: "healthy", message: "AI Copilot Backend API is running"}
 [API] ✅ Health check successful: {status: "healthy", ...}
 [App] ✅ Backend is healthy
 [App] 🚀 Initializing chat session...
 [API] 📤 Creating new session...
-[API] 🔗 Request URL: https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001/api/sessions
+[API] 🔗 Request URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app/api/sessions
 [API] 📡 Response status: 200 OK
 [API] ✅ API Response: {session_id: "..."}
 [App] ✅ Session created successfully: ...
@@ -178,7 +178,7 @@ Complete flow test:
 
 ### Error Flow (Backend Down)
 ```
-[API] ✅ Using process.env.REACT_APP_BACKEND_URL: https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001
+[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
 [App] 🏥 Starting health check...
 [API] 🏥 Performing health check...
 [API] ❌ Health check failed: Cannot connect to backend at https://... Network error or CORS issue.
@@ -194,7 +194,7 @@ The debug panel (bottom-right corner) shows:
 🔧 DEBUG PANEL
 
 Backend Connection:
-  Base URL: https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001
+  Base URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
   Health: ✅ HEALTHY
 
 App State:
@@ -217,7 +217,10 @@ Input Element:
 
 ### Frontend (.env)
 ```
-REACT_APP_BACKEND_URL=https://vscode-internal-11461-beta.beta01.cloud.kavia.ai:3001
+# Preferred
+REACT_APP_BACKEND_BASE_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+# Fallback (backward compatibility)
+# REACT_APP_BACKEND_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
 REACT_APP_GEMINI_API_KEY=<your-key>
 ```
 

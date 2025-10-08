@@ -25,7 +25,7 @@ if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
 } else {
   // Default to deployment-provided backend URL
-  BASE_URL = 'https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001';
+  BASE_URL = 'https://kavia-alb-2474e9cb-881246245.backend.kavia.app';
   console.log('[API] ✅ Using default BASE_URL (deployment):', BASE_URL);
 }
 

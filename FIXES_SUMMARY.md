@@ -134,7 +134,10 @@ Node.js test script to verify:
 
 ### Required for Frontend
 ```env
-REACT_APP_BACKEND_URL=https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001
+# Preferred
+REACT_APP_BACKEND_BASE_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+# Fallback (backward compatibility)
+# REACT_APP_BACKEND_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
 ```
 
 ### Required for Backend

@@ -3,8 +3,8 @@
 Date: (UTC) [replace with current run time]
 Environment:
 - Frontend URL: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3000
-- Backend URL: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001
-- Frontend ENV keys: REACT_APP_BACKEND_URL, REACT_APP_GEMINI_API_KEY
+- Backend URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+- Frontend ENV keys: REACT_APP_BACKEND_BASE_URL, REACT_APP_BACKEND_URL (fallback), REACT_APP_GEMINI_API_KEY
 
 Test Method: Node script (test-api-flow.js)
 
@@ -28,16 +28,16 @@ Manual Verification Steps:
 2) Verify BASE_URL in console:
    - Open DevTools → Console
    - Look for:
-     - [API] ✅ Using process.env.REACT_APP_BACKEND_URL: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001
-     - [API] 🔗 Final BASE_URL configured: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001
+     - [API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+     - [API] 🔗 Final BASE_URL configured: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
      - [API] 🏥 Performing health check...
      - [API] ✅ Health check successful
 
 3) Verify Network calls:
    - DevTools → Network
-   - GET https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001/ returns 200 with {"status":"healthy",...}
-   - POST https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001/api/sessions returns 200 with {"session_id":"..."}
-   - POST https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001/api/chat may return error related to Gemini model (expected until backend config fixed)
+   - GET https://kavia-alb-2474e9cb-881246245.backend.kavia.app/ returns 200 with {"status":"healthy",...}
+   - POST https://kavia-alb-2474e9cb-881246245.backend.kavia.app/api/sessions returns 200 with {"session_id":"..."}
+   - POST https://kavia-alb-2474e9cb-881246245.backend.kavia.app/api/chat may return error related to Gemini model (expected until backend config fixed)
 
 4) Send a message:
    - Type a message in the input and press Enter
@@ -47,7 +47,7 @@ Manual Verification Steps:
 Notes on Frontend BASE_URL resolution (src/services/api.js):
 - Priority 1: window.__BACKEND_URL__ (if injected at runtime)
 - Priority 2: process.env.REACT_APP_BACKEND_BASE_URL
-- Priority 3: process.env.REACT_APP_BACKEND_URL
+- Priority 3: process.env.REACT_APP_BACKEND_URL (fallback)
 - Fallback: deployment default used in code
 
 Backend Follow-up (to fix chat endpoint):
@@ -56,4 +56,4 @@ Backend Follow-up (to fix chat endpoint):
 - After updating, retry the POST /api/chat.
 
 Command to re-run script locally:
-BACKEND_URL=https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3001 node test-api-flow.js
+BACKEND_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app node test-api-flow.js
