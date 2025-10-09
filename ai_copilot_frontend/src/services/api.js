@@ -24,7 +24,7 @@ if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
   BASE_URL = process.env.REACT_APP_BACKEND_URL;
   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
 } else {
-  // Default to deployment-provided backend URL (correct ALB URL provided by user)
+  // Default to deployment-provided backend URL
   BASE_URL = 'https://kavia-alb-2474e9cb-881246245.backend.kavia.app';
   console.log('[API] ✅ Using default BASE_URL (deployment):', BASE_URL);
 }
