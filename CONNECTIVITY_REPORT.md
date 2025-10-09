@@ -1,6 +1,6 @@
 # Connectivity Report - AI Copilot
 
-Date: (UTC) [replace with current run time]
+Date: (UTC) [update at verification time]
 Environment:
 - Frontend URL: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3000
 - Backend URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
