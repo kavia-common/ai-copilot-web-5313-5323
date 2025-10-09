@@ -10,24 +10,31 @@
  * 1) window.__BACKEND_URL__ (runtime injection)
  * 2) process.env.REACT_APP_BACKEND_BASE_URL (preferred for CRA)
  * 3) process.env.REACT_APP_BACKEND_URL (backward compatibility)
- * 4) Default to the current backend URL provided by the environment
+ * Active override: hardcoded to new backend URL as requested.
+ *
+ * Note: Environment variable scaffolding is preserved below (commented)
+ * to allow easy reversion to env-driven configuration if needed.
  */
 let BASE_URL;
 
-if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
-  BASE_URL = window.__BACKEND_URL__;
-  console.log('[API] ✅ Using window.__BACKEND_URL__:', BASE_URL);
-} else if (process.env.REACT_APP_BACKEND_BASE_URL) {
-  BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
-  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', BASE_URL);
-} else if (process.env.REACT_APP_BACKEND_URL) {
-  BASE_URL = process.env.REACT_APP_BACKEND_URL;
-  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
-} else {
-  // Default to deployment-provided backend URL
-  BASE_URL = 'https://kavia-alb-2474e9cb-881246245.backend.kavia.app';
-  console.log('[API] ✅ Using default BASE_URL (deployment):', BASE_URL);
-}
+// ACTIVE: Hardcoded backend URL (unified to HTTPS)
+BASE_URL = 'https://vscode-internal-35991-beta.beta01.cloud.kavia.ai:3001';
+console.log('[API] ✅ Using hardcoded BACKEND BASE_URL:', BASE_URL);
+
+// Previous resolution preserved for reference/fallback (commented):
+// if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
+//   BASE_URL = window.__BACKEND_URL__;
+//   console.log('[API] ✅ Using window.__BACKEND_URL__:', BASE_URL);
+// } else if (process.env.REACT_APP_BACKEND_BASE_URL) {
+//   BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
+//   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', BASE_URL);
+// } else if (process.env.REACT_APP_BACKEND_URL) {
+//   BASE_URL = process.env.REACT_APP_BACKEND_URL;
+//   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
+// } else {
+//   BASE_URL = 'https://kavia-alb-2474e9cb-881246245.backend.kavia.app';
+//   console.log('[API] ✅ Using default BASE_URL (deployment):', BASE_URL);
+// }
 
 console.log('[API] 🔗 Final BASE_URL configured:', BASE_URL || '(empty)');
 console.log('[API] 🌍 Environment:', process.env.NODE_ENV);
