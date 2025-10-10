@@ -59,7 +59,7 @@ The application will automatically open in your browser at `http://localhost:300
 
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
-| `REACT_APP_BACKEND_BASE_URL` | Backend API base URL (preferred) | Yes | `https://kavia-alb-2474e9cb-881246245.backend.kavia.app` |
+| `REACT_APP_BACKEND_BASE_URL` | Backend API base URL (preferred) | Yes | `https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001` |
 | `REACT_APP_BACKEND_URL` | Backend API base URL (fallback) | No | (unset) |
 
 **Important**: Environment variables prefixed with `REACT_APP_` are embedded at build time. If you change them, restart the development server.

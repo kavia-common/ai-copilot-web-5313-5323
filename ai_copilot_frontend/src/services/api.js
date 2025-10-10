@@ -17,24 +17,20 @@
  */
 let BASE_URL;
 
-// ACTIVE: Hardcoded backend URL (unified to HTTPS)
-BASE_URL = 'https://vscode-internal-35991-beta.beta01.cloud.kavia.ai:3001';
-console.log('[API] ✅ Using hardcoded BACKEND BASE_URL:', BASE_URL);
-
-// Previous resolution preserved for reference/fallback (commented):
-// if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
-//   BASE_URL = window.__BACKEND_URL__;
-//   console.log('[API] ✅ Using window.__BACKEND_URL__:', BASE_URL);
-// } else if (process.env.REACT_APP_BACKEND_BASE_URL) {
-//   BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
-//   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', BASE_URL);
-// } else if (process.env.REACT_APP_BACKEND_URL) {
-//   BASE_URL = process.env.REACT_APP_BACKEND_URL;
-//   console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
-// } else {
-//   BASE_URL = 'https://kavia-alb-2474e9cb-881246245.backend.kavia.app';
-//   console.log('[API] ✅ Using default BASE_URL (deployment):', BASE_URL);
-// }
+// Prefer runtime-injected value, then CRA env vars, finally fall back to requested default URL
+if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
+  BASE_URL = window.__BACKEND_URL__;
+  console.log('[API] ✅ Using window.__BACKEND_URL__:', BASE_URL);
+} else if (process.env.REACT_APP_BACKEND_BASE_URL) {
+  BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
+  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', BASE_URL);
+} else if (process.env.REACT_APP_BACKEND_URL) {
+  BASE_URL = process.env.REACT_APP_BACKEND_URL;
+  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
+} else {
+  BASE_URL = 'https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001';
+  console.log('[API] ✅ Using default BASE_URL (requested):', BASE_URL);
+}
 
 console.log('[API] 🔗 Final BASE_URL configured:', BASE_URL || '(empty)');
 console.log('[API] 🌍 Environment:', process.env.NODE_ENV);

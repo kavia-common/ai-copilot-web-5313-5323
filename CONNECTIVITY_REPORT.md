@@ -3,7 +3,7 @@
 Date: (UTC) [replace with current run time]
 Environment:
 - Frontend URL: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3000
-- Backend URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+- Backend URL: https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001
 - Frontend ENV keys: REACT_APP_BACKEND_BASE_URL, REACT_APP_BACKEND_URL (fallback), REACT_APP_GEMINI_API_KEY
 
 Test Method: Node script (test-api-flow.js)

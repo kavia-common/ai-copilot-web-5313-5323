@@ -50,7 +50,7 @@
 
 ```bash
 # Check backend health
-curl -k https://kavia-alb-2474e9cb-881246245.backend.kavia.app/
+curl -k https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001/
 
 # Expected response:
 # {"status":"healthy","message":"AI Copilot Backend API is running"}
