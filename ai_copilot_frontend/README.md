@@ -36,14 +36,11 @@ React-based web interface for the AI Copilot application. Provides a clean, resp
    The `.env` file should contain:
 
    ```
-   # Preferred (used first by the app)
-   REACT_APP_BACKEND_BASE_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
-
-   # Fallback (backward compatibility)
-   # REACT_APP_BACKEND_URL=https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+   # Single source of truth used by the app
+   REACT_APP_BACKEND_URL=https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001
    ```
 
-   **Note**: For production deployments, update this URL to point to your backend API endpoint.
+   You can override this per-environment by changing the value above. The app also supports runtime injection via `window.__BACKEND_URL__`.
 
 ## Running the Frontend
 
@@ -59,9 +56,9 @@ The application will automatically open in your browser at `http://localhost:300
 
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
-| `REACT_APP_BACKEND_BASE_URL` | Backend API base URL (preferred) | Yes | `https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001` |
-| `REACT_APP_BACKEND_URL` | Backend API base URL (fallback) | No | (unset) |
+| `REACT_APP_BACKEND_URL` | Backend API base URL (single source of truth) | No | `https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001` |
 
+The app will also use `window.__BACKEND_URL__` if provided at runtime (takes precedence).
 **Important**: Environment variables prefixed with `REACT_APP_` are embedded at build time. If you change them, restart the development server.
 
 ## Backend Integration

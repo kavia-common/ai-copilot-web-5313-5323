@@ -4,7 +4,7 @@ Date: (UTC) [replace with current run time]
 Environment:
 - Frontend URL: https://vscode-internal-38099-beta.beta01.cloud.kavia.ai:3000
 - Backend URL: https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001
-- Frontend ENV keys: REACT_APP_BACKEND_BASE_URL, REACT_APP_BACKEND_URL (fallback), REACT_APP_GEMINI_API_KEY
+- Frontend ENV keys: REACT_APP_BACKEND_URL, REACT_APP_GEMINI_API_KEY
 
 Test Method: Node script (test-api-flow.js)
 
@@ -28,8 +28,8 @@ Manual Verification Steps:
 2) Verify BASE_URL in console:
    - Open DevTools → Console
    - Look for:
-     - [API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
-     - [API] 🔗 Final BASE_URL configured: https://kavia-alb-2474e9cb-881246245.backend.kavia.app
+     - [Config] ✅ Using process.env.REACT_APP_BACKEND_URL: https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001
+     - [API] 🔗 Final BASE_URL configured: https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001
      - [API] 🏥 Performing health check...
      - [API] ✅ Health check successful
 
@@ -44,11 +44,10 @@ Manual Verification Steps:
    - Check Network → /api/chat request/response
    - If you see a Gemini model error, it indicates backend model configuration issue, not connectivity.
 
-Notes on Frontend BASE_URL resolution (src/services/api.js):
+Notes on Frontend BASE_URL resolution (centralized in src/config.js):
 - Priority 1: window.__BACKEND_URL__ (if injected at runtime)
-- Priority 2: process.env.REACT_APP_BACKEND_BASE_URL
-- Priority 3: process.env.REACT_APP_BACKEND_URL (fallback)
-- Fallback: deployment default used in code
+- Priority 2: process.env.REACT_APP_BACKEND_URL
+- Fallback: default used in code: https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001
 
 Backend Follow-up (to fix chat endpoint):
 - Set a valid GEMINI_API_KEY in backend

@@ -91,6 +91,14 @@ Node.js test script to verify:
 
 ## Key Improvements
 
+### 0. Backend URL Centralization
+- Introduced src/config.js as a single source of truth for backend URL
+- Resolution order:
+  1) window.__BACKEND_URL__
+  2) REACT_APP_BACKEND_URL
+  3) Default: https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001
+- Refactored src/services/api.js to use centralized config and export getBaseUrl()
+
 ### 1. Connectivity Resilience
 - **Before**: Hard failure if backend unreachable during initial load
 - **After**: Graceful degradation with clear user feedback, input always enabled

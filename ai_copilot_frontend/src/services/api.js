@@ -5,37 +5,15 @@
  * Includes functions for session management and chat operations.
  */
 
-/**
- * Backend base URL resolution with prioritized fallbacks:
- * 1) window.__BACKEND_URL__ (runtime injection)
- * 2) process.env.REACT_APP_BACKEND_BASE_URL (preferred for CRA)
- * 3) process.env.REACT_APP_BACKEND_URL (backward compatibility)
- * Active override: hardcoded to new backend URL as requested.
- *
- * Note: Environment variable scaffolding is preserved below (commented)
- * to allow easy reversion to env-driven configuration if needed.
- */
-let BASE_URL;
+import { getBackendUrl } from '../config';
 
-// Prefer runtime-injected value, then CRA env vars, finally fall back to requested default URL
-if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
-  BASE_URL = window.__BACKEND_URL__;
-  console.log('[API] ✅ Using window.__BACKEND_URL__:', BASE_URL);
-} else if (process.env.REACT_APP_BACKEND_BASE_URL) {
-  BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
-  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', BASE_URL);
-} else if (process.env.REACT_APP_BACKEND_URL) {
-  BASE_URL = process.env.REACT_APP_BACKEND_URL;
-  console.log('[API] ✅ Using process.env.REACT_APP_BACKEND_URL:', BASE_URL);
-} else {
-  BASE_URL = 'https://vscode-internal-32145-beta.beta01.cloud.kavia.ai:3001';
-  console.log('[API] ✅ Using default BASE_URL (requested):', BASE_URL);
-}
-
+// Resolve and log BASE_URL from centralized config
+const BASE_URL = getBackendUrl();
 console.log('[API] 🔗 Final BASE_URL configured:', BASE_URL || '(empty)');
 console.log('[API] 🌍 Environment:', process.env.NODE_ENV);
 
-// Export BASE_URL for use in health checks
+// PUBLIC_INTERFACE
+/** Get the active backend URL for diagnostics and UI */
 export const getBaseUrl = () => BASE_URL;
 
 /**
