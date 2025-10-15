@@ -3,7 +3,7 @@
  * Run with: node test-api-flow.js
  */
 
-const BASE_URL = process.env.BACKEND_URL || 'https://vscode-internal-13559-beta.beta01.cloud.kavia.ai:3001';
+const BASE_URL = process.env.BACKEND_URL || 'https://vscode-internal-13141-beta.beta01.cloud.kavia.ai:3001';
 
 async function testHealthCheck() {
   console.log('\n🏥 Testing health check...');

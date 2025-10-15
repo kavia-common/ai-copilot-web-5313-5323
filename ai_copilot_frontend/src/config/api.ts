@@ -21,9 +21,10 @@ export function getApiBaseUrl(): string {
    * Returns the backend API base URL.
    * Order of precedence:
    * 1) window.__BACKEND_URL__ (injected at runtime, if present)
-   * 2) process.env.FRONTEND_BACKEND_BASE_URL (new single source for this project)
-   * 3) process.env.REACT_APP_BACKEND_URL (backward compatibility)
-   * 4) Default fallback to provided URL (must be API root, not /docs)
+   * 2) process.env.REACT_APP_BACKEND_BASE_URL (standardized for this project)
+   * 3) process.env.FRONTEND_BACKEND_BASE_URL (legacy support)
+   * 4) process.env.REACT_APP_BACKEND_URL (backward compatibility)
+   * 5) Default fallback to provided URL (must be API root, not /docs)
    */
   try {
     // Runtime injection support
@@ -34,7 +35,16 @@ export function getApiBaseUrl(): string {
       return url;
     }
 
-    // Preferred environment variable for this project
+    // Preferred standardized env var for CRA-based projects
+    if (process.env.REACT_APP_BACKEND_BASE_URL) {
+      console.log(
+        '[Config] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:',
+        process.env.REACT_APP_BACKEND_BASE_URL
+      );
+      return String(process.env.REACT_APP_BACKEND_BASE_URL);
+    }
+
+    // Legacy support (if some scripts set this var)
     if (process.env.FRONTEND_BACKEND_BASE_URL) {
       console.log(
         '[Config] ✅ Using process.env.FRONTEND_BACKEND_BASE_URL:',

@@ -18,6 +18,9 @@ export function getBackendUrl() {
   if (typeof window !== 'undefined' && window.__BACKEND_URL__) {
     url = window.__BACKEND_URL__;
     console.log('[Config] ✅ Using window.__BACKEND_URL__:', url);
+  } else if (process.env.REACT_APP_BACKEND_BASE_URL) {
+    url = process.env.REACT_APP_BACKEND_BASE_URL;
+    console.log('[Config] ✅ Using process.env.REACT_APP_BACKEND_BASE_URL:', url);
   } else if (process.env.FRONTEND_BACKEND_BASE_URL) {
     url = process.env.FRONTEND_BACKEND_BASE_URL;
     console.log('[Config] ✅ Using process.env.FRONTEND_BACKEND_BASE_URL:', url);
