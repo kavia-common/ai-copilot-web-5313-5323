@@ -5,10 +5,10 @@
  * Includes functions for session management and chat operations.
  */
 
-import { getBackendUrl } from '../config';
+import { getApiBaseUrl, getHealthCheckUrl } from '../config/api';
 
-// Resolve and log BASE_URL from centralized config
-const BASE_URL = getBackendUrl();
+// Resolve and log BASE_URL from centralized config (TypeScript helper is compiled by CRA)
+const BASE_URL = getApiBaseUrl();
 console.log('[API] 🔗 Final BASE_URL configured:', BASE_URL || '(empty)');
 console.log('[API] 🌍 Environment:', process.env.NODE_ENV);
 
@@ -63,7 +63,7 @@ const handleResponse = async (response) => {
  */
 export const healthCheck = async () => {
   console.log('[API] 🏥 Performing health check...');
-  const url = BASE_URL ? `${BASE_URL}/` : '/';
+  const url = getHealthCheckUrl();
   console.log('[API] 🔗 Health check URL:', url);
   
   try {
