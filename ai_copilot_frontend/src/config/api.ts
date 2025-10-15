@@ -15,15 +15,15 @@
 // - We support window.__BACKEND_URL__ to allow runtime overrides without rebuilds
 // - Default fallback points to the provided URL in task requirements
 //
-// PUBLIC_INTERFACE
+ // PUBLIC_INTERFACE
 export function getApiBaseUrl(): string {
   /**
-   * This returns the backend API base URL.
+   * Returns the backend API base URL.
    * Order of precedence:
    * 1) window.__BACKEND_URL__ (injected at runtime, if present)
-   * 2) process.env.REACT_APP_API_BASE_URL (preferred name per task)
-   * 3) process.env.REACT_APP_BACKEND_URL (backward compatible)
-   * 4) Default fallback to provided URL
+   * 2) process.env.FRONTEND_BACKEND_BASE_URL (new single source for this project)
+   * 3) process.env.REACT_APP_BACKEND_URL (backward compatibility)
+   * 4) Default fallback to provided URL (must be API root, not /docs)
    */
   try {
     // Runtime injection support
@@ -34,18 +34,22 @@ export function getApiBaseUrl(): string {
       return url;
     }
 
-    // Build-time environment variables (CRA)
-    if (process.env.REACT_APP_API_BASE_URL) {
-      console.log('[Config] ✅ Using process.env.REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
-      return String(process.env.REACT_APP_API_BASE_URL);
+    // Preferred environment variable for this project
+    if (process.env.FRONTEND_BACKEND_BASE_URL) {
+      console.log(
+        '[Config] ✅ Using process.env.FRONTEND_BACKEND_BASE_URL:',
+        process.env.FRONTEND_BACKEND_BASE_URL
+      );
+      return String(process.env.FRONTEND_BACKEND_BASE_URL);
     }
 
+    // Backward compatibility for existing setups (CRA-style)
     if (process.env.REACT_APP_BACKEND_URL) {
       console.log('[Config] ✅ Using process.env.REACT_APP_BACKEND_URL:', process.env.REACT_APP_BACKEND_URL);
       return String(process.env.REACT_APP_BACKEND_URL);
     }
 
-    // Default fallback (from task instruction; server root, not /docs)
+    // Default fallback (server root, not /docs)
     const fallback = 'https://vscode-internal-13141-beta.beta01.cloud.kavia.ai:3001';
     console.log('[Config] ✅ Using default backend URL (provided):', fallback);
     return fallback;
